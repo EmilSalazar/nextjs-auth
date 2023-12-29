@@ -25,6 +25,8 @@ const FormSchema = z
       .min(1, 'Password is required')
       .min(8, 'Password must have than 8 characters'),
     confirmPassword: z.string().min(1, 'Password confirmation is required'),
+    phoneNumber: z.string().min(1, 'Phone number is required'),
+    profession: z.string().min(1, 'Profession is required'),
   })
   .refine((data) => data.password === data.confirmPassword, {
     path: ['confirmPassword'],
@@ -39,6 +41,8 @@ const SignUpForm = () => {
       email: '',
       password: '',
       confirmPassword: '',
+      phoneNumber: '',
+      profession: '',
     },
   });
 
@@ -105,6 +109,32 @@ const SignUpForm = () => {
                     type='password'
                     {...field}
                   />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='phoneNumber'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Phone Number</FormLabel>
+                <FormControl>
+                  <Input placeholder='Enter your phone number' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='profession'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Profession</FormLabel>
+                <FormControl>
+                  <Input placeholder='Enter your profession' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
