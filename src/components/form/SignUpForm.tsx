@@ -15,6 +15,7 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import GoogleSignInButton from '../GoogleSignInButton';
+import { useRouter } from 'next/navigation';
 
 const FormSchema = z
   .object({
@@ -25,7 +26,7 @@ const FormSchema = z
       .min(1, 'Password is required')
       .min(8, 'Password must have than 8 characters'),
     confirmPassword: z.string().min(1, 'Password confirmation is required'),
-    phoneNumber: z.string().min(1, 'Phone number is required'),
+    phone: z.string().min(1, 'Phone number is required'),
     profession: z.string().min(1, 'Profession is required'),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -34,6 +35,7 @@ const FormSchema = z
   });
 
 const SignUpForm = () => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -41,13 +43,31 @@ const SignUpForm = () => {
       email: '',
       password: '',
       confirmPassword: '',
-      phoneNumber: '',
+      phone: '',
       profession: '',
     },
   });
 
-  const onSubmit = (values: z.infer<typeof FormSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof FormSchema>) => {
+    const response = await fetch('/api/user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: values.username,
+        email: values.email,
+        password: values.password,
+        phone: values.phone,
+        profession: values.profession,
+      })
+    });
+
+    if(response.ok) {
+      router.push('/sign-in');
+    } else {
+      console.error('Registration failed');
+    }
   };
 
   return (
@@ -116,7 +136,7 @@ const SignUpForm = () => {
           />
           <FormField
             control={form.control}
-            name='phoneNumber'
+            name='phone'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Phone Number</FormLabel>

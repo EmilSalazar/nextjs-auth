@@ -1,16 +1,16 @@
 import Link from 'next/link';
 import { buttonVariants } from './ui/button';
-import { HandMetal } from 'lucide-react';
+import Image from 'next/image';
 
 const Navbar = () => {
   return (
-    <div className=' bg-blue-500 py-2 border-b border-s-zinc-200 fixed w-full z-10 top-0'>
+    <div className=' bg-black py-2 border-b border-s-zinc-200 fixed w-full z-10 top-0'>
       <div className='container flex items-center justify-between'>
         <Link href='/'>
-          <HandMetal />
+          <Image src='/logo.png' alt='Logo' width={150} height={150} />
         </Link>
-        <div>
-          <Link className={buttonVariants()} href='/sign-in'>
+        <div className='flex space-x-4'>
+          <Link className={buttonVariants()}  href='/sign-in'>
             Sign in
           </Link>
           <Link className={buttonVariants()} href='/sign-up'>
